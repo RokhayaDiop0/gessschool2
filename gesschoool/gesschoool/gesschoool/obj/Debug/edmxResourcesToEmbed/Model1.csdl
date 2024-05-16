@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="gesscolaireModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="classe">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="libelle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="niveau" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="specialite" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Etudiant" Relationship="Self.FK_Etudiant_classe" FromRole="classe" ToRole="Etudiant" />
+  </EntityType>
+  <EntityType Name="Etudiant">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="prenom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="credit" Type="Int32" />
+    <Property Name="reglement" Type="Int32" />
+    <Property Name="annescolaire" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="idclasse" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="classe" Relationship="Self.FK_Etudiant_classe" FromRole="Etudiant" ToRole="classe" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Utilisateur">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_Etudiant_classe">
+    <End Role="classe" Type="Self.classe" Multiplicity="1" />
+    <End Role="Etudiant" Type="Self.Etudiant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="classe">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Etudiant">
+        <PropertyRef Name="idclasse" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="gesscolaireEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="classe" EntityType="Self.classe" />
+    <EntitySet Name="Etudiant" EntityType="Self.Etudiant" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" />
+    <AssociationSet Name="FK_Etudiant_classe" Association="Self.FK_Etudiant_classe">
+      <End Role="classe" EntitySet="classe" />
+      <End Role="Etudiant" EntitySet="Etudiant" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
